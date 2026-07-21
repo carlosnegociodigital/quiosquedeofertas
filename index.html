@@ -52,6 +52,76 @@
             header { padding-top: 70px; }
             .social-media { right: 50%; transform: translateX(50%); top: 15px; }
         }
+        /* =======================
+   BANNER SHOPEE
+======================= */
+
+.container-shopee-banner{
+    width:100%;
+    max-width:1200px;
+    margin:25px auto;
+    padding:0 20px;
+}
+
+.shopee-banner{
+    position:relative;
+    overflow:hidden;
+    border-radius:15px;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    background:#fff;
+}
+
+.shopee-banner-trilho{
+    display:flex;
+    transition:transform .5s ease;
+}
+
+.shopee-banner-slide{
+    min-width:100%;
+}
+
+.shopee-banner-slide img{
+    width:100%;
+    display:block;
+}
+
+.shopee-seta{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    cursor:pointer;
+    font-size:24px;
+    z-index:5;
+    transition:.3s;
+}
+
+.shopee-seta:hover{
+    background:#ff5722;
+}
+
+.shopee-seta-esq{
+    left:10px;
+}
+
+.shopee-seta-dir{
+    right:10px;
+}
+
+@media(max-width:768px){
+
+.shopee-seta{
+    width:34px;
+    height:34px;
+    font-size:18px;
+}
+
+}
     </style>
 </head>
 <body>
@@ -71,8 +141,43 @@
 
         <h1>🛍️ Quiosque de Ofertas shopee</h1>
         <p>As melhores ofertas selecionadas para você. Clique e aproveite!</p>
+        
     </header>
 
+<div class="container-shopee-banner">
+    <div class="shopee-banner">
+
+        <button class="shopee-seta shopee-seta-esq" onclick="mudarSlide(-1)">
+            &#10094;
+        </button>
+
+        <button class="shopee-seta shopee-seta-dir" onclick="mudarSlide(1)">
+            &#10095;
+        </button>
+
+        <div class="shopee-banner-trilho" id="trilho">
+
+            <a href="https://s.shopee.com.br/110oqFt4BM" class="shopee-banner-slide" target="_blank">
+                <img src="https://down-br.img.susercontent.com/file/br-11134258-820m0-mpjygsfar7cz18@resize_w1440_nl.webp">
+            </a>
+
+            <a href="https://s.shopee.com.br/8fQCoYiXjh" class="shopee-banner-slide" target="_blank">
+                <img src="https://down-br.img.susercontent.com/file/br-11134258-820m4-mpml0knp8v0je0@resize_w797_nl.webp">
+            </a>
+
+            <a href="https://s.shopee.com.br/30lq4Nd9qQ" class="shopee-banner-slide" target="_blank">
+                <img src="https://down-br.img.susercontent.com/file/br-11134258-820lk-mpi8ri5u5ptvb3@resize_w797_nl.webp">
+            </a>
+
+            <a href="https://s.shopee.com.br/Ll4uHgJMs" class="shopee-banner-slide" target="_blank">
+                <img src="https://down-br.img.susercontent.com/file/br-11134258-820md-mpblod44v2td12@resize_w1440_nl.webp">
+            </a>
+
+        </div>
+
+    </div>
+</div>
+    
     <div class="container">
         <div class="grid" id="products-grid"></div>
     </div>
@@ -115,6 +220,40 @@
 
         products.forEach(p => {
             const wpText = encodeURIComponent(`Olha esse achadinho na Shopee: ${p.name} por apenas R$ ${p.price}! Veja aqui: ${p.link}`);
+            /* ======================
+   SLIDER
+====================== */
+
+let slideAtual = 0;
+
+const trilho = document.getElementById("trilho");
+const totalSlides = document.querySelectorAll(".shopee-banner-slide").length;
+
+function atualizarBanner(){
+    trilho.style.transform =
+        `translateX(-${slideAtual*100}%)`;
+}
+
+function mudarSlide(direcao){
+
+    slideAtual += direcao;
+
+    if(slideAtual < 0){
+        slideAtual = totalSlides-1;
+    }
+
+    if(slideAtual >= totalSlides){
+        slideAtual = 0;
+    }
+
+    atualizarBanner();
+
+}
+
+// troca automática
+setInterval(()=>{
+    mudarSlide(1);
+},5000);
             const wpLink = `https://api.whatsapp.com/send?text=${wpText}`;
 
             const card = document.createElement('div');
